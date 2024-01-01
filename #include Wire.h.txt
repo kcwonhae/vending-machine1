@@ -1,0 +1,31 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <Servo.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+Servo servo1;
+
+const int switchPin = 2;
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.print("Press the button");
+
+  servo1.attach(6);
+  pinMode(switchPin, INPUT);
+}
+
+void loop() {
+  if (digitalRead(switchPin) == HIGH) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Take your letter");
+    servo1.write(90);
+    delay(1000);  // 서보 모터 동작을 안정화시키기 위한 딜레이
+  } else {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Press the button");
+    servo1.write(0);  // If the switch is not pressed, move the servo to 0 position
+  }
+}
